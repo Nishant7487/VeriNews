@@ -1,0 +1,53 @@
+node_modules/
+backend/venv/
+backend/__pycache__/
+.env
+verinews.db
+dist/
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Python / FastAPI
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+.env
+
+# Database (SQLite)
+verinews.db
+verinews.db-journal
+
+# Frontend (Vite/React)
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# OS Specific
+.DS_Store
+Thumbs.db

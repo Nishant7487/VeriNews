@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: rgb(15 23 42 / 0.3);
+  border-radius: 3px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: rgb(71 85 105 / 0.7);
+  border-radius: 3px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background: rgb(51 65 85 / 0.8);
+}
+
+textarea::-webkit-scrollbar-thumb:active {
+  background: rgb(30 41 59 / 1);
+}
+
+textarea {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(71 85 105 / 0.7) rgb(15 23 42 / 0.3);
+}
