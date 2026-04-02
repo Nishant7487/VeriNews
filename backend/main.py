@@ -109,9 +109,13 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     return user
 
 # 6. API Routes
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 async def root():
-    return {"status": "online", "model_loaded": predictor is not None, "security": "enabled"}
+    return {
+        "status": "online",
+        "model_loaded": predictor is not None,
+        "security": "enabled"
+    }
 
 @app.post("/register", status_code=status.HTTP_201_CREATED)
 def register(user: UserCreate, db: Session = Depends(get_db)):
