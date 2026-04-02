@@ -8,7 +8,7 @@ from jose import JWTError, jwt
 from datetime import datetime, timedelta
 import os
 import logging
-import models
+from . import models
 from database import engine, SessionLocal
 from predictor import FakeNewsPredictor
 from fact_checker import verify_with_google
