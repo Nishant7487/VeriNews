@@ -1,3 +1,5 @@
+from xml.parsers.expat import model
+
 from fastapi import FastAPI, HTTPException, Depends, status, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -35,7 +37,14 @@ app.add_middleware(
 )
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODEL_PATH = os.path.join(BASE_DIR, 'ml_model', 'verinews_probability_model.pkl')
-predictor = FakeNewsPredictor(MODEL_PATH)
+predictor = None
+
+def get_predictor():
+    global predictor
+    if predictor is None:
+        predictor = FakeNewsPredictor(MODEL_PATH)
+    return predictor
+
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback_secret_for_local_dev_only_998877")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -128,7 +137,8 @@ async def predict_news(request: Request, payload: NewsRequest, db: Session = Dep
         raise HTTPException(status_code=400, detail="Text is too short. Provide 50+ words.")
     
     try:
-        result = predictor.predict(payload.text)
+        model = get_predictor()
+        result = model.predict(payload.text)
         
         fact_check_data = await verify_with_google(payload.text)
         
