@@ -1,5 +1,3 @@
-from xml.parsers.expat import model
-
 from fastapi import FastAPI, HTTPException, Depends, status, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -42,7 +40,13 @@ predictor = None
 def get_predictor():
     global predictor
     if predictor is None:
-        predictor = FakeNewsPredictor(MODEL_PATH)
+        try:
+            logging.info("Loading ML model...")
+            predictor = FakeNewsPredictor(MODEL_PATH)
+            logging.info("Model loaded successfully")
+        except Exception as e:
+            logging.error(f"Model loading failed: {e}")
+            raise e
     return predictor
 
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback_secret_for_local_dev_only_998877")
@@ -107,7 +111,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 # 6. API Routes
 @app.get("/")
 async def root():
-    return {"status": "online", "model_loaded": predictor.model is not None, "security": "enabled"}
+    return {"status": "online", "model_loaded": predictor is not None, "security": "enabled"}
 
 @app.post("/register", status_code=status.HTTP_201_CREATED)
 def register(user: UserCreate, db: Session = Depends(get_db)):
@@ -160,7 +164,7 @@ async def predict_news(request: Request, payload: NewsRequest, db: Session = Dep
         }
     except Exception as e:
         logging.error(f"Prediction Error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Model not available")
 
 @app.get("/history")
 async def get_history(limit: int = 10, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
