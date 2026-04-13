@@ -8,11 +8,11 @@ from jose import JWTError, jwt
 from datetime import datetime, timedelta
 import os
 import logging
-from . import models
-from .database import engine, SessionLocal
-from .predictor import FakeNewsPredictor
-from .fact_checker import verify_with_google
-from .scraper import fetch_article_from_url
+import models
+from database import engine, SessionLocal
+from predictor import FakeNewsPredictor
+from fact_checker import verify_with_google
+from scraper import fetch_article_from_url
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
